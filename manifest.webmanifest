@@ -1,0 +1,39 @@
+{
+  "name": "Orvena Command Center",
+  "short_name": "Command Center",
+  "description": "Orvena Property Group calling dashboard",
+  "display": "standalone",
+  "display_override": [
+    "fullscreen",
+    "standalone"
+  ],
+  "orientation": "landscape",
+  "background_color": "#03070d",
+  "theme_color": "#03070d",
+  "icons": [
+    {
+      "src": "icons/orvena-command-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/orvena-command-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/orvena-command-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/orvena-command-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

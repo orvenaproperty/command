@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Orvena Command Center</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<!-- Home Screen / standalone (iPadOS + iOS) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Orvena Command Center">
+<meta name="application-name" content="Orvena Command Center">
+<meta name="theme-color" content="#03070d">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="apple-touch-icon" href="icons/orvena-command-180.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/orvena-command-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/orvena-command-167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/orvena-command-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/orvena-command-192.png">
+<!-- Sign-in is an emailed one-time code inside the app; the device token is kept in this page's localStorage. No secrets in this file. -->
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#03070d;overflow:hidden;overscroll-behavior:none}
+  body{
+    /* keep the app clear of the status bar / home indicator / rounded corners */
+    box-sizing:border-box;height:100vh;height:100dvh;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  #app{display:block;width:100%;height:100%;border:0;background:#03070d}
+</style>
+</head>
+<body>
+<iframe id="app" title="Orvena Command Center" allow="clipboard-write" referrerpolicy="no-referrer"></iframe>
+<script>
+  // Live /exec URL (no query string). Not a secret: the app itself asks for an emailed code.
+  var EXEC_URL = 'https://script.google.com/macros/s/AKfycbzA5vTwVS8HfBZKKILoWcq38S29a9D8EXsh-S5LgTq6_Xw3E6JT_JK89YisqVPy0nanxQ/exec';
+  var STORE = 'orvenaDeviceToken';
+  function okTok(t){ t = String(t || ''); return /^[A-Za-z0-9_-]{32,128}$/.test(t) ? t : ''; }
+  function getTok(){ try { return okTok(localStorage.getItem(STORE)); } catch (e) { return ''; } }
+  function setTok(t){ try { t ? localStorage.setItem(STORE, t) : localStorage.removeItem(STORE); } catch (e) {} }
+  function open_(){ var t = getTok(); document.getElementById('app').src = EXEC_URL + (t ? '?t=' + encodeURIComponent(t) : ''); }
+  function trusted(o){ o = String(o || ''); return o === 'https://script.google.com' || /^https:\/\/[A-Za-z0-9.-]+\.googleusercontent\.com$/.test(o); }
+  window.addEventListener('message', function(e){
+    if (!trusted(e.origin) || !e.data || typeof e.data !== 'object') return;
+    if (e.data.type === 'orvena-token') {
+      var t = okTok(e.data.token);
+      if (t && t !== getTok()) { setTok(t); open_(); }
+    } else if (e.data.type === 'orvena-token-clear') {
+      setTok('');
+    }
+  });
+  open_();
+</script>
+</body>
+</html>
